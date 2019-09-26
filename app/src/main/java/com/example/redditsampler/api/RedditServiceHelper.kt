@@ -1,5 +1,6 @@
 package com.example.redditsampler.api
 
+import androidx.lifecycle.LiveData
 import com.example.redditsampler.data.PostResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
