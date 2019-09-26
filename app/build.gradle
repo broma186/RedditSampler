@@ -53,6 +53,10 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutinesVersion"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$rootProject.coroutinesVersion"
 
+    implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+    implementation 'com.squareup.retrofit2:converter-moshi:2.6.0'
+    implementation 'org.jetbrains.anko:anko-common:0.9' // Toasts
+
     testImplementation "junit:junit:$rootProject.junitVersion"
     androidTestImplementation "androidx.test:runner:$rootProject.runnerVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoVersion"

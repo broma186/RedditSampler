@@ -1,8 +1,6 @@
 package com.example.redditsampler.data
 
-data class Post(
-
+data class PostResponse (
     val kind : String,
-    val data : PostAttributes
-
+    val data : PostInfo
 )

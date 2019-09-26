@@ -6,7 +6,7 @@
 
         <variable
             name="post"
-            type="com.example.redditsampler.data.Post" />
+            type="com.example.redditsampler.viewmodels.PostViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
