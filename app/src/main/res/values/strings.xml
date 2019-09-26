@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">RedditSampler</string>
+    <string name="comments">Comments</string>
 </resources>
