@@ -81,7 +81,7 @@ class PostAdapter(private val posts : List<Post>) : RecyclerView.Adapter<PostAda
         }
 
         override fun areContentsTheSame(oldItem: PostViewModel, newItem: PostViewModel): Boolean {
-            return oldItem == newItem
+            return oldItem.link.equals(newItem.link)
         }
     }
 }

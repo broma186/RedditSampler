@@ -18,7 +18,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="centerCrop"
-            app:imageFromUrl="@{post.thumbnailUrl}"
+            app:imageFromUrl="https://upload.wikimedia.org/wikipedia/commons/2/29/Beetroot_jm26647.jpg"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -27,7 +27,7 @@
             android:id="@+id/post_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{post.title}"
+            android:text="@{viewModel.post.data.title}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/post_thumbnail_image"
             app:layout_constraintTop_toTopOf="parent" />
