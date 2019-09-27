@@ -36,15 +36,7 @@ class PostViewModel(post : Post): ViewModel() {
     val thumbnail
         get() =  post.data.thumbnail
 
-    @BindingAdapter("imageFromUrl")
-    fun bindImageFromUrl(view: ImageView, thumbnail: String?) {
-        if (!thumbnail.isNullOrEmpty() && thumbnail.contains(view.context.getString(R.string.https))) {
-            Log.d("TEST", "glidin around")
-            Glide.with(view.context)
-                .load(thumbnail)
-                .transition(DrawableTransitionOptions.withCrossFade())
-                .into(view)
-        }
-    }
+
+
 }
 

@@ -17,7 +17,8 @@ import com.example.redditsampler.CommentsActivity
 import com.example.redditsampler.R
 
 
-class PostAdapter(private val posts : List<Post>?) : RecyclerView.Adapter<PostAdapter.PostViewHolder>(){
+class PostAdapter(private val context: Context, private val posts : List<Post>?) : RecyclerView.Adapter<PostAdapter.PostViewHolder>(){
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostAdapter.PostViewHolder {
         return PostViewHolder(
@@ -28,10 +29,8 @@ class PostAdapter(private val posts : List<Post>?) : RecyclerView.Adapter<PostAd
     }
 
     override fun onBindViewHolder(holder: PostAdapter.PostViewHolder, position: Int) {
-        Log.d("TEST", "on bind")
         posts!![position].let { products ->
             with(holder) {
-                Log.d("TEST", "on bind with holder")
                 bind(products)
             }
         }
@@ -57,15 +56,9 @@ class PostAdapter(private val posts : List<Post>?) : RecyclerView.Adapter<PostAd
             }
         }
         fun bind(post: Post) {
-            Log.d("TEST", "on bind list item 1")
-
             with(binding) {
-                Log.d("TEST", "on bind list item 2")
-
                 viewModel = PostViewModel(post)
                 executePendingBindings()
-                Log.d("TEST", "on bind list item 3")
-
             }
         }
 

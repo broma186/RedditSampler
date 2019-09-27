@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.redditsampler.adapters.PostAdapter
 import com.example.redditsampler.api.RedditServiceHelper
 import com.example.redditsampler.data.Post
@@ -31,7 +32,8 @@ class PostsActivity : AppCompatActivity() {
     }
 
     fun setUpPostsList(posts : List<Post>?) {
-        adapter = PostAdapter(posts)
+        binding.postList.layoutManager = LinearLayoutManager(this)
+        adapter = PostAdapter(this, posts)
         binding.postList.adapter = adapter
     }
 
