@@ -4,16 +4,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.redditsampler.api.RedditServiceHelper
-import com.example.redditsampler.data.CommentsResponse
 import com.example.redditsampler.data.PostResponse
 import com.example.redditsampler.utils.ARTICLE_ID
-import com.example.redditsampler.utils.COMMENTS_LINK
 import com.example.redditsampler.utils.SUBREDDIT
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
 import org.jetbrains.anko.toast
 import retrofit2.HttpException
 import retrofit2.Response
@@ -39,12 +36,12 @@ class CommentsActivity : AppCompatActivity() {
 
     fun getComments() {
         CoroutineScope(Dispatchers.IO).launch {
-            val response: Response<CommentsResponse> = RedditServiceHelper.getComments(subreddit, id)
+            val response: Response<PostResponse> = RedditServiceHelper.getComments(subreddit, id)
             withContext(Dispatchers.Main) {
                 try {
                     if (response != null) {
+                        val res = response
                         toast("CHEER BUDDAY!")
-                        val res: Response<CommentsResponse> = response
                         Log.d("TEST", "succeees")
                     } else {
                         toast("OWHHA")
