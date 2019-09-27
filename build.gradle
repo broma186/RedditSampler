@@ -22,6 +22,7 @@ buildscript {
         gradleVersion = '3.5.0'
         materialVersion = '1.1.0-alpha09'
         glideVersion = '4.9.0'
+        roomVersion = '2.1.0'
 
     }
     dependencies {

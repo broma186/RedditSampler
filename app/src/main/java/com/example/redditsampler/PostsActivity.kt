@@ -2,8 +2,10 @@ package com.example.redditsampler
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.observe
 import com.example.redditsampler.adapters.PostAdapter
 import com.example.redditsampler.api.RedditServiceHelper
 import com.example.redditsampler.data.Post
@@ -27,32 +29,18 @@ class PostsActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView<ActivityPostsBinding>(this, R.layout.activity_posts)
         setSupportActionBar(binding.toolbar)
 
-        getPosts()
-    }
-
-    fun setUpPostsList(posts : List<Post>?) {
-        adapter = PostAdapter(posts)
+        adapter = PostAdapter()
         binding.postList.adapter = adapter
+
+        observeList()
     }
 
-
-    fun getPosts()  {
-        CoroutineScope(Dispatchers.IO).launch {
-            val response: Response<PostResponse> = RedditServiceHelper.getPosts()
-            withContext(Dispatchers.Main) {
-                try {
-                    setUpPostsList(response.body()?.data?.children)
-                } catch (e: HttpException) {
-                    toast("\"Exception ${e.message}\"")
-                    finish()
-                } catch (e: Throwable) {
-                    toast("Ooops: Something else went wrong")
-                    finish()
-                }
+    fun observeList() {
+        viewModel.productList.observe(viewLifecycleOwner) {result ->
+            if (!result.isNullOrEmpty()) {
+                binding.noProducts.visibility = View.GONE
             }
-
+            adapter.submitList(result)
         }
     }
-
-
 }
