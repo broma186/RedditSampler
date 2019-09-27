@@ -1,21 +1,33 @@
 package com.example.redditsampler.data
 
-data class CommentResponse (
+data class CommentResponse(
 
-    val data : CommentInfo
+    val article : String,
+    val comment : String?,
+    val context : Int,
+    val depth : Int?,
+    val limit : Int?,
+    val showedits : Boolean,
+    val showmore : Boolean,
+    val threaded : Boolean,
+    val truncate : Int
 )
 
-data class CommentInfo (
+data class CommentInfo(
 
-    val children : List<Comment>
+    val permalink: String
 )
 
 
-data class Comment (
+data class Comment(
 
-    val data : PostAttributes
+    val data: CommentAttributes
 )
 
-data class CommentAttributes (
-    val subreddit : String
+data class CommentAttributes(
+    val body : NestedComment
+)
+
+data class NestedComment(
+    val body : List<String>
 )

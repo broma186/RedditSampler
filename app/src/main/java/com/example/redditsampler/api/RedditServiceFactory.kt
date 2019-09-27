@@ -19,7 +19,7 @@ object RedditServiceFactory {
     fun createRedditService(): RedditService {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-            .addConverterFactory(MoshiConverterFactory.create())
+            .addConverterFactory(gsonConverter)
             .client(mainClient)
             .build().create(RedditService::class.java)
     }
@@ -30,12 +30,12 @@ object RedditServiceFactory {
             if (mClient == null) {
                   val interceptor = HttpLoggingInterceptor()
                  interceptor.level = HttpLoggingInterceptor.Level.BODY
-
                 val httpBuilder = OkHttpClient.Builder()
                 httpBuilder
-                    .connectTimeout(15, TimeUnit.SECONDS)
+                    .connectTimeout(20, TimeUnit.SECONDS)
                     .readTimeout(20, TimeUnit.SECONDS)
                     .addInterceptor(interceptor)  /// show all JSON in logCat
+
                 return httpBuilder.build()
 
             }
