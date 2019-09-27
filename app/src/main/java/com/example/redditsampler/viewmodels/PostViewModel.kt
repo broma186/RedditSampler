@@ -34,12 +34,16 @@ class PostViewModel(post : Post): ViewModel() {
 
     val post : Post = checkNotNull(post)
 
+    val id
+        get() =  post.data.id
     val title
         get() = post.data.title
     val link
         get() = post.data.permalink
     val thumbnail
         get() =  post.data.thumbnail
+    val subreddit
+        get() = post.data.subreddit
 
 }
 

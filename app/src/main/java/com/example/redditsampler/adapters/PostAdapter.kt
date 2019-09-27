@@ -15,8 +15,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
 import com.example.redditsampler.CommentsActivity
 import com.example.redditsampler.R
-import com.example.redditsampler.utils.BASE_URL
-import com.example.redditsampler.utils.LINK_BASE
+import com.example.redditsampler.utils.*
 
 
 class PostAdapter(private val context: Context, private val posts : List<Post>?) : RecyclerView.Adapter<PostAdapter.PostViewHolder>(){
@@ -72,6 +71,10 @@ class PostAdapter(private val context: Context, private val posts : List<Post>?)
 
         fun goToComments() {
             val intent = Intent(context, CommentsActivity::class.java)
+            intent.putExtra(SUBREDDIT, binding.viewModel?.subreddit)
+            Log.d("TEST", "subreddit : " + binding.viewModel?.subreddit)
+            intent.putExtra(ARTICLE_ID, binding.viewModel?.id)
+            Log.d("TEST", "article id" + binding.viewModel?.id)
             startActivity(context, intent, null)
         }
 
