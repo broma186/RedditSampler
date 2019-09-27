@@ -15,6 +15,8 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
 import com.example.redditsampler.CommentsActivity
 import com.example.redditsampler.R
+import com.example.redditsampler.utils.BASE_URL
+import com.example.redditsampler.utils.LINK_BASE
 
 
 class PostAdapter(private val context: Context, private val posts : List<Post>?) : RecyclerView.Adapter<PostAdapter.PostViewHolder>(){
@@ -51,7 +53,13 @@ class PostAdapter(private val context: Context, private val posts : List<Post>?)
             binding.commentsLayout.setOnClickListener {
                 goToComments()
             }
+            binding.postTitle.setOnClickListener {
+                openPost()
+            }
             binding.postLayout.setOnClickListener {
+                openPost()
+            }
+            binding.postThumbnailImage.setOnClickListener {
                 openPost()
             }
         }
@@ -70,7 +78,7 @@ class PostAdapter(private val context: Context, private val posts : List<Post>?)
         // Opens the reddit post specified by the post object's link in a browser.
         fun openPost() {
             val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(binding.viewModel?.link)
+            i.data = Uri.parse(LINK_BASE + binding.viewModel?.link)
             startActivity(context, i, null)
         }
     }

@@ -1,11 +1,16 @@
 package com.example.redditsampler.adapters
 
+import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.widget.ImageView
+import androidx.core.content.ContextCompat
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.redditsampler.R
+import com.example.redditsampler.utils.LINK_BASE
 
 
 object BindingAdapters {
@@ -19,5 +24,7 @@ object BindingAdapters {
                 .into(view)
         }
     }
+
+
 }
 
