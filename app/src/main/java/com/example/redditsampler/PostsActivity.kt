@@ -27,34 +27,21 @@ class PostsActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView<ActivityPostsBinding>(this, R.layout.activity_posts)
         setSupportActionBar(binding.toolbar)
 
-        viewModel = ViewModelProviders.of(this).get(PostViewModel::class.java)
-
-        setUpPostsList()
-         getPosts()
+        getPosts()
     }
 
-    fun setUpPostsList() {
-        adapter = PostAdapter()
+    fun setUpPostsList(posts : List<Post>?) {
+        adapter = PostAdapter(posts)
         binding.postList.adapter = adapter
-        //subscribeUi(adapter)
     }
 
 
     fun getPosts()  {
         CoroutineScope(Dispatchers.IO).launch {
             val response: Response<PostResponse> = RedditServiceHelper.getPosts()
-            if (response.isSuccessful) {
-                toast("Got posts")
-            } else {
-                toast("Error: ${response.code()}")
-            }
             withContext(Dispatchers.Main) {
-                val postResponse : PostResponse? = response.body()
-                val posts: List<Post>? = postResponse?.data?.children
-
-
                 try {
-                    // Do nothing
+                    setUpPostsList(response.body()?.data?.children)
                 } catch (e: HttpException) {
                     toast("\"Exception ${e.message}\"")
                     finish()

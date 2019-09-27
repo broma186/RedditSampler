@@ -3,6 +3,7 @@ package com.example.redditsampler.adapters
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -11,31 +12,34 @@ import com.example.redditsampler.data.Post
 import com.example.redditsampler.viewmodels.PostViewModel
 import com.example.redditsampler.databinding.ListItemPostBinding
 import androidx.core.content.ContextCompat.startActivity
+import androidx.databinding.DataBindingUtil
 import com.example.redditsampler.CommentsActivity
+import com.example.redditsampler.R
 
 
-class PostAdapter(private val posts : List<Post>) : RecyclerView.Adapter<PostAdapter.PostViewHolder>(){
-
-    lateinit var viewModel
+class PostAdapter(private val posts : List<Post>?) : RecyclerView.Adapter<PostAdapter.PostViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostAdapter.PostViewHolder {
         return PostViewHolder(
-            ListItemPostBinding.inflate(
-                LayoutInflater.from(parent.context), parent, false
-            )
-        )
+            DataBindingUtil.inflate(
+                LayoutInflater.from(parent.context),
+                R.layout.list_item_post, parent, false)
+        ,parent.context)
     }
 
     override fun onBindViewHolder(holder: PostAdapter.PostViewHolder, position: Int) {
-        posts[position].let { products ->
+        Log.d("TEST", "on bind")
+        posts!![position].let { products ->
             with(holder) {
+                Log.d("TEST", "on bind with holder")
                 bind(products)
             }
         }
+
     }
 
     override fun getItemCount(): Int {
-        return posts.size
+        return  posts?.size!!
     }
 
     class PostViewHolder(
@@ -53,9 +57,15 @@ class PostAdapter(private val posts : List<Post>) : RecyclerView.Adapter<PostAda
             }
         }
         fun bind(post: Post) {
+            Log.d("TEST", "on bind list item 1")
+
             with(binding) {
+                Log.d("TEST", "on bind list item 2")
+
                 viewModel = PostViewModel(post)
                 executePendingBindings()
+                Log.d("TEST", "on bind list item 3")
+
             }
         }
 
@@ -67,21 +77,8 @@ class PostAdapter(private val posts : List<Post>) : RecyclerView.Adapter<PostAda
         // Opens the reddit post specified by the post object's link in a browser.
         fun openPost() {
             val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(binding.viewModel.link)
+            i.data = Uri.parse(binding.viewModel?.link)
             startActivity(context, i, null)
-        }
-    }
-
-
-
-    private class PostDiffCallback : DiffUtil.ItemCallback<PostViewModel>() {
-
-        override fun areItemsTheSame(oldItem: PostViewModel, newItem: PostViewModel): Boolean {
-            return oldItem.title == newItem.title
-        }
-
-        override fun areContentsTheSame(oldItem: PostViewModel, newItem: PostViewModel): Boolean {
-            return oldItem.link.equals(newItem.link)
         }
     }
 }

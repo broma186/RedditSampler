@@ -18,9 +18,11 @@ import retrofit2.Response
 import retrofit2.http.Url
 import java.net.URL
 import kotlin.coroutines.CoroutineContext
-import sun.security.krb5.internal.KDCOptions.with
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.util.Log
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.example.redditsampler.R
 
 
 class PostViewModel(post : Post): ViewModel() {
@@ -34,6 +36,15 @@ class PostViewModel(post : Post): ViewModel() {
     val thumbnail
         get() =  post.data.thumbnail
 
-
+    @BindingAdapter("imageFromUrl")
+    fun bindImageFromUrl(view: ImageView, thumbnail: String?) {
+        if (!thumbnail.isNullOrEmpty() && thumbnail.contains(view.context.getString(R.string.https))) {
+            Log.d("TEST", "glidin around")
+            Glide.with(view.context)
+                .load(thumbnail)
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(view)
+        }
+    }
 }
 
