@@ -72,8 +72,6 @@ class PostAdapter(private val context: Context, private val posts : List<Post>?)
         fun goToComments() {
             val intent = Intent(context, CommentsActivity::class.java)
             intent.putExtra(COMMENTS_LINK, binding.viewModel?.link)
-            Log.d("TEST", "link : " + binding.viewModel?.link)
-
             startActivity(context, intent, null)
         }
 

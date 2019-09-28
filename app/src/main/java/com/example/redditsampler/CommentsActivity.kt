@@ -27,7 +27,6 @@ class CommentsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_posts)
 
         permalink = intent.getStringExtra(COMMENTS_LINK)
-        Log.d("TEST", "permalink : " + permalink)
 
         getComments()
     }

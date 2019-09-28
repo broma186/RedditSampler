@@ -1,7 +1,10 @@
 package com.example.redditsampler
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,6 +18,17 @@ import kotlinx.coroutines.*
 import org.jetbrains.anko.toast
 import retrofit2.HttpException
 import retrofit2.Response
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.view.View
+import android.webkit.WebViewClient
+import androidx.core.app.ComponentActivity.ExtraData
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.example.redditsampler.utils.AuthHelper
+
 
 class PostsActivity : AppCompatActivity() {
 
@@ -28,7 +42,9 @@ class PostsActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView<ActivityPostsBinding>(this, R.layout.activity_posts)
         setSupportActionBar(binding.toolbar)
 
-        getPosts()
+        AuthHelper.getRedditAuthPermission(binding.authView, this)
+
+        //getPosts()
     }
 
     fun setUpPostsList(posts : List<Post>?) {
@@ -36,7 +52,6 @@ class PostsActivity : AppCompatActivity() {
         adapter = PostAdapter(this, posts)
         binding.postList.adapter = adapter
     }
-
 
     fun getPosts()  {
         CoroutineScope(Dispatchers.IO).launch {
