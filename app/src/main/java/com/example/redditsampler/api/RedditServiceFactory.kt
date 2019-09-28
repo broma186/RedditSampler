@@ -34,8 +34,12 @@ object RedditServiceFactory {
                 httpBuilder
                     .connectTimeout(20, TimeUnit.SECONDS)
                     .readTimeout(20, TimeUnit.SECONDS)
-                    .addInterceptor(interceptor)  /// show all JSON in logCat
-
+                    .addInterceptor{ chain ->
+                val newRequest = chain.request().newBuilder()
+                    //.addHeader("Accept", "application/json")
+                    .build()  /// show all JSON in logCat
+                chain.proceed(newRequest)
+            }
                 return httpBuilder.build()
 
             }
@@ -49,7 +53,6 @@ object RedditServiceFactory {
                     .create(
                         GsonBuilder()
                             .setLenient()
-                            .disableHtmlEscaping()
                             .create())
             }
             return mGsonConverter!!

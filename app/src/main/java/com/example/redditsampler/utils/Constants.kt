@@ -5,3 +5,6 @@ const val LINK_BASE : String = "https://www.reddit.com"
 const val COMMENTS_LINK : String = "comments"
 const val SUBREDDIT : String = "subreddit"
 const val ARTICLE_ID : String = "article_id"
+
+const val REDDIT_USERNAME : String = "broma186"
+const val REDDIT_PASSWORD : String = "Matthewb19"

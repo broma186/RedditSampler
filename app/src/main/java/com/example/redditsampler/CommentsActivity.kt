@@ -34,12 +34,12 @@ class CommentsActivity : AppCompatActivity() {
 
     fun getComments() {
         CoroutineScope(Dispatchers.IO).launch {
-            val response: Response<CommentResponse> = RedditServiceHelper.getComments(permalink)
+            val response: ResponseBody = RedditServiceHelper.getComments(permalink)
             withContext(Dispatchers.Main) {
                 try {
                     val res = response
                        // toast("CHEER BUDDAY!")
-                        Log.d("TEST", "succeees")
+                        Log.d("TEST", "response getcomments: " + res.toString())
                 } catch (e: HttpException) {
                   //  toast("\"Exception ${e.message}\"")
                 } catch (e: Throwable) {

@@ -11,7 +11,7 @@ object RedditServiceHelper {
     suspend fun getPosts() : Response<PostResponse> = RedditServiceFactory.
         createRedditService().getPosts()
 
-    suspend fun getComments(permalink : String?) : Response<CommentResponse> = RedditServiceFactory.
+    suspend fun getComments(permalink : String?) : ResponseBody = RedditServiceFactory.
         createRedditService().getComments(permalink)
 
 
