@@ -19,6 +19,10 @@ interface RedditService {
     @GET()
     suspend fun getComments(@Url url: String?) : ResponseBody
 
+    @FormUrlEncoded
     @POST("api/v1/access_token")
-    suspend fun getRedditAuthToken(@Header("Authorization") authorization : String, @Body authRequest : AuthRequest) : Response<AuthResponse>
+    suspend fun getRedditAuthToken(@Header("Authorization") authorization : String,
+                                   @Field("grant_type") grantType: String,
+                                   @Field("code") code : String,
+                                   @Field("redirect_uri") redirectUri : String) : Response<AuthResponse>
 }

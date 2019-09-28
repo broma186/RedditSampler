@@ -27,6 +27,6 @@ object RedditServiceHelper {
     suspend fun getComments(permalink : String?) : ResponseBody = RedditServiceFactory.
         createRedditService().getComments(permalink)
 
-    suspend fun getRedditAuthToken(authorization : String, authRequest: AuthRequest) : Response<AuthResponse> = RedditServiceFactory.
-        createRedditService().getRedditAuthToken(authorization, authRequest)
+    suspend fun getRedditAuthToken(authorization : String, grantType: String, code : String, redirectUri : String) : Response<AuthResponse> = RedditServiceFactory.
+        createRedditService().getRedditAuthToken(authorization, grantType, code, redirectUri)
 }

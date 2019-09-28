@@ -6,7 +6,7 @@ const val LINK_BASE : String = "https://www.reddit.com"
 
 const val USERNAME = "broma186"
 const val PASSWORD = "Matthewb19"
-const val AUTH_CLIENT_ID : String = "W-yLIWH4rE8Ejw"
+const val AUTH_CLIENT_ID : String = "z2R0Fw62d51jtw"
 const val AUTH_REDIRECT_URI : String = "https://broma186.github.io/RedditSampler/"
 const val AUTH_RESPONSE_TYPE : String = "code"
 const val AUTH_DURATION : String = "permanent"
