@@ -13,6 +13,8 @@ import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.core.content.ContextCompat.startActivity
+import com.example.redditsampler.data.AuthRequest
+import com.example.redditsampler.data.AuthResponse
 import com.example.redditsampler.utils.*
 import retrofit2.Response
 import java.util.*
@@ -25,4 +27,6 @@ object RedditServiceHelper {
     suspend fun getComments(permalink : String?) : ResponseBody = RedditServiceFactory.
         createRedditService().getComments(permalink)
 
+    suspend fun getRedditAuthToken(authorization : String, authRequest: AuthRequest) : Response<AuthResponse> = RedditServiceFactory.
+        createRedditService().getRedditAuthToken(authorization, authRequest)
 }

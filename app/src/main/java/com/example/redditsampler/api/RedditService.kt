@@ -20,5 +20,5 @@ interface RedditService {
     suspend fun getComments(@Url url: String?) : ResponseBody
 
     @POST("api/v1/access_token")
-    suspend fun getRedditAuthToken(@Body authRequest : AuthRequest) : Response<AuthResponse>
+    suspend fun getRedditAuthToken(@Header("Authorization") authorization : String, @Body authRequest : AuthRequest) : Response<AuthResponse>
 }

@@ -34,13 +34,8 @@ object RedditServiceFactory {
                 httpBuilder
                     .connectTimeout(20, TimeUnit.SECONDS)
                     .readTimeout(20, TimeUnit.SECONDS)
-                    .addInterceptor{ chain ->
-                val newRequest = chain.request().newBuilder()
-                    //.addHeader("Accept", "application/json")
-                    .build()  /// show all JSON in logCat
-                chain.proceed(newRequest)
-            }
-                return httpBuilder.build()
+                    .addInterceptor(interceptor)
+                mClient = httpBuilder.build()
 
             }
             return mClient!!

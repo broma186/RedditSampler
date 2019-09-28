@@ -1,7 +1,6 @@
 package com.example.redditsampler.utils
 
 const val BASE_URL : String = "https://www.reddit.com"
-import java.util.*
 
 const val LINK_BASE : String = "https://www.reddit.com"
 
@@ -22,3 +21,5 @@ const val GITHUB_WELCOME : String = "Welcome to GitHub Pages"
 
 const val AUTH_FAILURE : String = "error"
 const val AUTH_STATE : String = "state="
+
+const val AUTH_REQUEST_CODE = "authorization_code"
