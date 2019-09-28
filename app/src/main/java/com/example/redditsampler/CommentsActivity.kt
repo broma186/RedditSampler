@@ -27,8 +27,6 @@ class CommentsActivity : AppCompatActivity() {
 
         subreddit = intent.getStringExtra(SUBREDDIT)
         id = intent.getStringExtra(ARTICLE_ID)
-        Log.d("TEST", "subreddit2 : " + subreddit)
-        Log.d("TEST", "id2 : " + id)
 
 
         getComments()

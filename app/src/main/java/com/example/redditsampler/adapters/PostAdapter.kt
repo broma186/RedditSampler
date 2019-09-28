@@ -72,9 +72,7 @@ class PostAdapter(private val context: Context, private val posts : List<Post>?)
         fun goToComments() {
             val intent = Intent(context, CommentsActivity::class.java)
             intent.putExtra(SUBREDDIT, binding.viewModel?.subreddit)
-            Log.d("TEST", "subreddit : " + binding.viewModel?.subreddit)
             intent.putExtra(ARTICLE_ID, binding.viewModel?.id)
-            Log.d("TEST", "article id" + binding.viewModel?.id)
             startActivity(context, intent, null)
         }
 
