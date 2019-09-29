@@ -2,5 +2,5 @@ package com.example.redditsampler.api
 
 interface AuthenticationInterface {
 
-    fun retrievedAuthToken(authToken : String)
+    fun retrievedAuthToken(authToken : String?)
 }

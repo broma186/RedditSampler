@@ -27,15 +27,17 @@ import android.webkit.WebViewClient
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.webkit.WebView
 import com.example.redditsampler.api.AuthenticationInterface
 import com.example.redditsampler.utils.AuthHelper
 
 
-class PostsActivity : AppCompatActivity(), AuthenticationInterface {
+class PostsActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityPostsBinding
     lateinit var viewModel: PostViewModel
     lateinit var adapter : PostAdapter
+    var mAuthToken : String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,14 +45,24 @@ class PostsActivity : AppCompatActivity(), AuthenticationInterface {
         binding = DataBindingUtil.setContentView<ActivityPostsBinding>(this, R.layout.activity_posts)
         setSupportActionBar(binding.toolbar)
 
-        AuthHelper(this).getRedditAuthPermission(binding.authView, this)
 
-        //getPosts()
+        binding.authView.visibility = View.VISIBLE
+
+        val authHelper = AuthHelper(this, object: AuthenticationInterface {
+            override fun retrievedAuthToken(authToken : String?) {
+                Log.d("TEST", "got auth: " + authToken)
+                mAuthToken = authToken
+                binding.authView.visibility = View.GONE
+                getPosts()
+            }
+        }, binding.authView)
+
+        authHelper.getRedditAuthPermission()
+
+
     }
 
-    override fun retrievedAuthToken(authToken: String) {
 
-    }
 
     fun setUpPostsList(posts : List<Post>?) {
         binding.postList.layoutManager = LinearLayoutManager(this)
