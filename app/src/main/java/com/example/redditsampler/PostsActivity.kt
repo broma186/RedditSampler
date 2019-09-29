@@ -27,10 +27,11 @@ import android.webkit.WebViewClient
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import com.example.redditsampler.api.AuthenticationInterface
 import com.example.redditsampler.utils.AuthHelper
 
 
-class PostsActivity : AppCompatActivity() {
+class PostsActivity : AppCompatActivity(), AuthenticationInterface {
 
     lateinit var binding: ActivityPostsBinding
     lateinit var viewModel: PostViewModel
@@ -42,9 +43,13 @@ class PostsActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView<ActivityPostsBinding>(this, R.layout.activity_posts)
         setSupportActionBar(binding.toolbar)
 
-        AuthHelper.getRedditAuthPermission(binding.authView, this)
+        AuthHelper(this).getRedditAuthPermission(binding.authView, this)
 
         //getPosts()
+    }
+
+    override fun retrievedAuthToken(authToken: String) {
+
     }
 
     fun setUpPostsList(posts : List<Post>?) {
