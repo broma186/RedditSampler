@@ -19,7 +19,7 @@ object RedditServiceFactory {
     fun createRedditService(baseUrl : String): RedditService {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
-            .addConverterFactory(gsonConverter)
+            .addConverterFactory(MoshiConverterFactory.create())
             .client(mainClient)
             .build().create(RedditService::class.java)
     }

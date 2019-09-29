@@ -13,11 +13,8 @@ interface RedditService {
     @GET(".json")
     suspend fun getPosts() : Response<PostResponse>
 
-    @Headers(
-        "Content-Type: application/json",
-        "Accept: application/json")
     @GET()
-    suspend fun getComments(@Url url: String?) : Response<CommentResponse>
+    suspend fun getComments(@Header("Authorization") authorization: String?, @Url url: String?) : Response<List<CommentResponse>>
 
     @FormUrlEncoded
     @POST("api/v1/access_token")

@@ -50,12 +50,12 @@ class PostsActivity : AppCompatActivity() {
 
         val authHelper = AuthHelper(this, object: AuthenticationInterface {
             override fun retrievedAuthToken(authToken : String?) {
-                Log.d("TEST", "got auth: " + authToken)
                 mAuthToken = authToken
                 binding.authView.visibility = View.GONE
                 getPosts()
             }
         }, binding.authView)
+
 
         authHelper.getRedditAuthPermission()
 

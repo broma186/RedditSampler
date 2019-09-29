@@ -81,6 +81,7 @@ class AuthHelper(val mContext : AppCompatActivity,
             withContext(Dispatchers.Main) {
                 val res  = response.body()
                 if (response.isSuccessful) {
+                    storeAuthToken(res?.access_token)
                     storeAuthTimeStamp(res?.expires_in) // Used for checking expired auth token.
                     authenticationInterface.retrievedAuthToken(res?.access_token)
                 }
@@ -89,7 +90,12 @@ class AuthHelper(val mContext : AppCompatActivity,
         }
     }
 
+    fun storeAuthToken(authToken : String?) {
 
+        mContext.getSharedPreferences(REDDIT_STORAGE, Context.MODE_PRIVATE).edit().putString(
+            AUTH_TOKEN, authToken).apply()
+
+    }
 
     fun storeAuthTimeStamp(expiresIn : Int?) {
 
