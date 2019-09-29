@@ -22,11 +22,11 @@ import java.util.*
 object RedditServiceHelper {
 
     suspend fun getPosts(): Response<PostResponse> =
-        RedditServiceFactory.createRedditService().getPosts()
+        RedditServiceFactory.createRedditService(BASE_URL).getPosts()
 
-    suspend fun getComments(permalink : String?) : ResponseBody = RedditServiceFactory.
-        createRedditService().getComments(permalink)
+    suspend fun getComments(permalink : String?) : Response<CommentResponse> = RedditServiceFactory.
+        createRedditService(BASE_URL_AUTH).getComments(permalink)
 
     suspend fun getRedditAuthToken(authorization : String, grantType: String, code : String, redirectUri : String) : Response<AuthResponse> = RedditServiceFactory.
-        createRedditService().getRedditAuthToken(authorization, grantType, code, redirectUri)
+        createRedditService(BASE_URL).getRedditAuthToken(authorization, grantType, code, redirectUri)
 }

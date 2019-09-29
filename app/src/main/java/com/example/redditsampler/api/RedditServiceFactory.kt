@@ -16,9 +16,9 @@ object RedditServiceFactory {
     private var mClient: OkHttpClient? = null
     private var mGsonConverter: GsonConverterFactory? = null
 
-    fun createRedditService(): RedditService {
+    fun createRedditService(baseUrl : String): RedditService {
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
+            .baseUrl(baseUrl)
             .addConverterFactory(gsonConverter)
             .client(mainClient)
             .build().create(RedditService::class.java)

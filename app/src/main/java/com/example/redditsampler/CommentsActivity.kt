@@ -33,7 +33,7 @@ class CommentsActivity : AppCompatActivity() {
 
     fun getComments() {
         CoroutineScope(Dispatchers.IO).launch {
-            val response: ResponseBody = RedditServiceHelper.getComments(permalink)
+            val response: Response<CommentResponse> = RedditServiceHelper.getComments(permalink)
             withContext(Dispatchers.Main) {
                 try {
                     val res = response

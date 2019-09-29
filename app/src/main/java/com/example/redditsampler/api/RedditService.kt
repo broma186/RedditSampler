@@ -17,7 +17,7 @@ interface RedditService {
         "Content-Type: application/json",
         "Accept: application/json")
     @GET()
-    suspend fun getComments(@Url url: String?) : ResponseBody
+    suspend fun getComments(@Url url: String?) : Response<CommentResponse>
 
     @FormUrlEncoded
     @POST("api/v1/access_token")
