@@ -19,20 +19,30 @@ import retrofit2.Response
 import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.redditsampler.adapters.CommentsAdapter
 import com.example.redditsampler.adapters.PostAdapter
 import com.example.redditsampler.data.Comment
 import com.example.redditsampler.data.Post
+import com.example.redditsampler.databinding.ActivityCommentsBinding
+import com.example.redditsampler.databinding.ActivityPostsBinding
 import com.google.gson.Gson
 
 
 class CommentsActivity : AppCompatActivity() {
 
+    lateinit var binding: ActivityCommentsBinding
     private var permalink: String? = null
+    lateinit var adapter : CommentsAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_posts)
+
+        binding = DataBindingUtil.setContentView<ActivityCommentsBinding>(this, R.layout.activity_comments)
+        setSupportActionBar(binding.toolbar)
 
         permalink = intent.getStringExtra(COMMENTS_LINK)
 
@@ -45,9 +55,8 @@ class CommentsActivity : AppCompatActivity() {
             val response: Response<List<CommentResponse>> =
                 RedditServiceHelper.getComments(authorization, permalink)
             withContext(Dispatchers.Main) {
-
                 if (response.isSuccessful) {
-                   // setUpCommentsList(response.body()?.get(1)?.data?.children)
+                    setUpCommentsList(response.body()?.get(1)?.data?.children)
                 } else {
                     toast("Failed to get comments")
                 }
@@ -56,11 +65,11 @@ class CommentsActivity : AppCompatActivity() {
         }
     }
 
-    /*fun setUpCommentsList(comments: List<Comment>?) {
-        binding.postList.layoutManager = LinearLayoutManager(this)
-        adapter = PostAdapter(this, posts)
-        binding.postList.adapter = adapter
+    fun setUpCommentsList(comments: List<Comment>?) {
+        binding.commentList.layoutManager = LinearLayoutManager(this)
+        adapter = CommentsAdapter(this, comments)
+        binding.commentList.adapter = adapter
 
-    }*/
+    }
 
 }

@@ -35,7 +35,6 @@ import com.example.redditsampler.utils.AuthHelper
 class PostsActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityPostsBinding
-    lateinit var viewModel: PostViewModel
     lateinit var adapter : PostAdapter
     var mAuthToken : String? = null
 
