@@ -1,37 +1,14 @@
-## Welcome to GitHub Pages
+## RedditSampler Info
+
+This app has two appcompat activities that display a recycler view each. One with the posts and one with the comments, each with adapters/view holders.
+I decided to use Room for the database storage since it is the most efficient SQL wrapper to implement in android app stores using coroutines for multi threading. I also utilized view models with data binding to reduce boilerplate code and clean up the code around the recycler views. Retrofit is used in conjunction with coroutines for network requests. Only the coroutine launch method is used rather that async/await as I am doing one shot requests one at a time. **The app should run with any reddit login credentials, you don't need mine.
+The app knows what the app id is for authentication, it is stored in the constants file.** 
+
+_Make sure you accept the permissions request that is brought up in a webview at the start of the user flow. You will keep getting
+prompted by this screen until you accept._
 
 You can use the [editor on GitHub](https://github.com/broma186/RedditSampler/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/broma186/RedditSampler/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://help.github.com/categories/github-pages-basics/) or [contact support](https://github.com/contact) and we’ll help you sort it out.
