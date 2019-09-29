@@ -1,6 +1,7 @@
 package com.example.redditsampler
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -28,15 +29,19 @@ import androidx.core.app.ComponentActivity.ExtraData
 import androidx.core.content.ContextCompat.getSystemService
 import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import android.webkit.WebView
+import com.example.redditsampler.api.AuthApiHelper
 import com.example.redditsampler.api.AuthenticationInterface
+import com.example.redditsampler.data.AuthResponse
+import com.example.redditsampler.utils.AUTH_TOKEN_STORAGE_TIME
 import com.example.redditsampler.utils.AuthHelper
+import com.example.redditsampler.utils.REDDIT_STORAGE
 
 
 class PostsActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityPostsBinding
-    lateinit var adapter : PostAdapter
-    var mAuthToken : String? = null
+    lateinit var adapter: PostAdapter
+    val context: Context = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,32 +49,30 @@ class PostsActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView<ActivityPostsBinding>(this, R.layout.activity_posts)
         setSupportActionBar(binding.toolbar)
 
+        authenticateUserOrGetPosts()
+    }
 
-        binding.authView.visibility = View.VISIBLE
+    fun authenticateUserOrGetPosts() {
 
-        val authHelper = AuthHelper(this, object: AuthenticationInterface {
-            override fun retrievedAuthToken(authToken : String?) {
-                mAuthToken = authToken
-                binding.authView.visibility = View.GONE
+        val authHelper = AuthHelper(this, object : AuthenticationInterface {
+            override fun retrievedAuthToken() {
                 getPosts()
             }
         }, binding.authView)
 
-
-        authHelper.getRedditAuthPermission()
-
-
+        CoroutineScope(Dispatchers.IO).launch {
+            val authRes: List<AuthResponse> = AuthApiHelper.getAuthorization(context)
+            withContext(Dispatchers.Main) {
+                if (authHelper.shouldShowAuthPermissionScreen(context, authRes)) {
+                    authHelper.getRedditAuthPermission()
+                } else {
+                    getPosts()
+                }
+            }
+        }
     }
 
-
-
-    fun setUpPostsList(posts : List<Post>?) {
-        binding.postList.layoutManager = LinearLayoutManager(this)
-        adapter = PostAdapter(this, posts)
-        binding.postList.adapter = adapter
-    }
-
-    fun getPosts()  {
+    fun getPosts() {
         CoroutineScope(Dispatchers.IO).launch {
             val response: Response<PostResponse> = RedditServiceHelper.getPosts()
             withContext(Dispatchers.Main) {
@@ -83,9 +86,12 @@ class PostsActivity : AppCompatActivity() {
                     finish()
                 }
             }
-
         }
     }
 
-
+    fun setUpPostsList(posts: List<Post>?) {
+        binding.postList.layoutManager = LinearLayoutManager(this)
+        adapter = PostAdapter(this, posts)
+        binding.postList.adapter = adapter
+    }
 }

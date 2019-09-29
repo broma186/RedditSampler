@@ -21,6 +21,7 @@ import java.util.*
 import android.R.attr.data
 import android.content.Context
 import com.example.redditsampler.PostsActivity
+import com.example.redditsampler.api.AuthApiHelper
 import com.example.redditsampler.api.AuthenticationInterface
 import org.apache.commons.codec.binary.Base64
 import kotlin.math.absoluteValue
@@ -30,11 +31,30 @@ class AuthHelper(val mContext : AppCompatActivity,
                  val authenticationInterface: AuthenticationInterface,
                  val webView: WebView) {
 
+
+    fun shouldShowAuthPermissionScreen(context: Context, authResponse: List<AuthResponse>) : Boolean {
+        if (authResponse.size > 0) { // If there has been a previous authentication, see if auth is still valid
+            val res = authResponse.get(0)
+            val expiresInMillis = res.expires_in * 1000
+            val lastLoginTime = context.getSharedPreferences(REDDIT_STORAGE, Context.MODE_PRIVATE).getLong(
+                AUTH_TOKEN_STORAGE_TIME, 0)
+            val timeMillisBetweenNowAndLastLogin =
+                System.currentTimeMillis() - lastLoginTime
+            if (timeMillisBetweenNowAndLastLogin > expiresInMillis) { // Auth token has expired, get another 'temporary' one.
+                return true
+            } else {  // User auth token is still valid, use that.
+                return false
+            }
+        } else { // User has never used the app, get auth credentials for first time.
+            return true
+        }
+    }
+
+
     fun getRedditAuthPermission() {
 
-
+        webView.visibility = View.VISIBLE
         val state: String = UUID.randomUUID().toString()
-
         try {
             webView.setWebViewClient(object : WebViewClient() {
 
@@ -53,7 +73,7 @@ class AuthHelper(val mContext : AppCompatActivity,
                             val code = codeWithCode.substring(codeWithCode.indexOf("=") + 1)
                             getAuthToken(code)
                         }
-                    } else if (url.contains(AUTH_FAILURE)) {
+                    } else if (url.contains(AUTH_FAILURE)) { // User has declined reddit permissions. Show page again
                         webView.loadUrl(getAuthUrl(state))
                     }
                 }
@@ -61,7 +81,7 @@ class AuthHelper(val mContext : AppCompatActivity,
             webView.loadUrl(getAuthUrl(state))
         } catch (ex: Exception) {
             ex.printStackTrace()
-            webView.visibility = View.GONE
+            hideAuthView()
         }
     }
 
@@ -79,31 +99,25 @@ class AuthHelper(val mContext : AppCompatActivity,
                 code, AUTH_REDIRECT_URI
             )
             withContext(Dispatchers.Main) {
+                hideAuthView()
                 val res  = response.body()
                 if (response.isSuccessful) {
-                    storeAuthToken(res?.access_token)
-                    storeAuthTimeStamp(res?.expires_in) // Used for checking expired auth token.
-                    authenticationInterface.retrievedAuthToken(res?.access_token)
+                    AuthApiHelper.writeAuthenticationToDb(response.body(), mContext)
+                    storeAuthTimeStamp()
+                    authenticationInterface.retrievedAuthToken()
                 }
             }
 
         }
     }
 
-    fun storeAuthToken(authToken : String?) {
-
-        mContext.getSharedPreferences(REDDIT_STORAGE, Context.MODE_PRIVATE).edit().putString(
-            AUTH_TOKEN, authToken).apply()
-
+    fun hideAuthView() {
+        webView.visibility = View.GONE
     }
 
-    fun storeAuthTimeStamp(expiresIn : Int?) {
-
+    fun storeAuthTimeStamp() {
         mContext.getSharedPreferences(REDDIT_STORAGE, Context.MODE_PRIVATE).edit().putLong(
             AUTH_TOKEN_STORAGE_TIME, System.currentTimeMillis()).apply()
-
-        mContext.getSharedPreferences(REDDIT_STORAGE, Context.MODE_PRIVATE).edit().putLong(
-            AUTH_TOKEN_TIME_STAMP, expiresIn?.toLong()!!).apply()
     }
 
 

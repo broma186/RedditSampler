@@ -23,6 +23,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.redditsampler.adapters.CommentsAdapter
 import com.example.redditsampler.adapters.PostAdapter
+import com.example.redditsampler.api.AuthApiHelper
 import com.example.redditsampler.data.Comment
 import com.example.redditsampler.data.Post
 import com.example.redditsampler.databinding.ActivityCommentsBinding
@@ -35,7 +36,7 @@ class CommentsActivity : AppCompatActivity() {
     lateinit var binding: ActivityCommentsBinding
     private var permalink: String? = null
     lateinit var adapter : CommentsAdapter
-
+    val context: Context = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,9 +50,15 @@ class CommentsActivity : AppCompatActivity() {
         getComments()
     }
 
+    fun setUpCommentsList(comments: List<Comment>?) {
+        binding.commentList.layoutManager = LinearLayoutManager(this)
+        adapter = CommentsAdapter(this, comments)
+        binding.commentList.adapter = adapter
+    }
+
     fun getComments() {
-        val authorization =  AUTH_HEADER + getSharedPreferences(REDDIT_STORAGE, Context.MODE_PRIVATE).getString(AUTH_TOKEN, "")
         CoroutineScope(Dispatchers.IO).launch {
+            val authorization =  AUTH_HEADER + AuthApiHelper.getAuthToken(context)
             val response: Response<List<CommentResponse>> =
                 RedditServiceHelper.getComments(authorization, permalink)
             withContext(Dispatchers.Main) {
@@ -59,17 +66,9 @@ class CommentsActivity : AppCompatActivity() {
                     setUpCommentsList(response.body()?.get(1)?.data?.children)
                 } else {
                     toast("Failed to get comments")
+                    finish()
                 }
             }
-
         }
     }
-
-    fun setUpCommentsList(comments: List<Comment>?) {
-        binding.commentList.layoutManager = LinearLayoutManager(this)
-        adapter = CommentsAdapter(this, comments)
-        binding.commentList.adapter = adapter
-
-    }
-
 }

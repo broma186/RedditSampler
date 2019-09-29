@@ -23,11 +23,10 @@ const val GITHUB_WELCOME : String = "Welcome to GitHub Pages"
 const val AUTH_FAILURE : String = "error"
 const val AUTH_STATE : String = "state="
 const val REDDIT_STORAGE : String = "storage"
-const val AUTH_TOKEN_TIME_STAMP : String = "auth_time_stamp"
 const val AUTH_TOKEN_STORAGE_TIME : String = "auth_storage_time"
 const val AUTH_TOKEN : String = "auth_token"
 
-
+const val DATABASE_NAME = "reddit-db"
 const val BASIC_AUTH_HEADER = "Basic "
 const val AUTH_HEADER = "bearer "
 
