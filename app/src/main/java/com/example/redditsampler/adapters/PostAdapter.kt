@@ -49,17 +49,12 @@ class PostAdapter(private val context: Context, private val posts : List<Post>?)
         init {
             context = binding.root.context
 
+            binding.setClickListener { view ->
+                openPost()
+            }
+
             binding.commentsLayout.setOnClickListener {
                 goToComments()
-            }
-            binding.postTitle.setOnClickListener {
-                openPost()
-            }
-            binding.postLayout.setOnClickListener {
-                openPost()
-            }
-            binding.postThumbnailImage.setOnClickListener {
-                openPost()
             }
         }
         fun bind(post: Post) {

@@ -4,6 +4,9 @@
 
     <data>
         <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener"/>
+        <variable
             name="viewModel"
             type="com.example.redditsampler.viewmodels.PostViewModel" />
     </data>
@@ -12,6 +15,7 @@
         android:id="@+id/post_layout"
         android:layout_marginLeft="15dp"
         android:layout_width="match_parent"
+        android:onClick="@{clickListener}"
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp"
         android:layout_marginRight="15dp"
@@ -24,6 +28,7 @@
             android:layout_height="100dp"
             android:background="@drawable/list_item_rounded_corners"
             app:imageFromUrl="@{viewModel.thumbnail}"
+            android:onClick="@{clickListener}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"/>
@@ -36,6 +41,7 @@
             android:scrollHorizontally="false"
             android:singleLine="false"
             android:text="@{viewModel.title}"
+            android:onClick="@{clickListener}"
             android:textColor="@color/colorBlack"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/post_thumbnail_image"
@@ -54,7 +60,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/comments_24dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

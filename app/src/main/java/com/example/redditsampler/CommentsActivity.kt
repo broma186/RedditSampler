@@ -30,7 +30,10 @@ import com.example.redditsampler.databinding.ActivityCommentsBinding
 import com.example.redditsampler.databinding.ActivityPostsBinding
 import com.google.gson.Gson
 
-
+/*
+Displays the comments for the selected post. Does not show replies, something that can be expanded
+upon in future.
+ */
 class CommentsActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityCommentsBinding
@@ -45,17 +48,23 @@ class CommentsActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView<ActivityCommentsBinding>(this, R.layout.activity_comments)
         setSupportActionBar(binding.toolbar)
 
-        permalink = intent.getStringExtra(COMMENTS_LINK)
+        permalink = intent.getStringExtra(COMMENTS_LINK) // The link URL used to get the comments
 
-        getComments()
+        getComments() // Get the comments using the permalink value
     }
 
+    /*
+    Initializes the adapter and adds it to the recycler view.
+     */
     fun setUpCommentsList(comments: List<Comment>?) {
         binding.commentList.layoutManager = LinearLayoutManager(this)
         adapter = CommentsAdapter(this, comments)
         binding.commentList.adapter = adapter
     }
 
+    /*
+    Downloads comments for the selected article in the posts activity.
+     */
     fun getComments() {
         CoroutineScope(Dispatchers.IO).launch {
             val authorization =  AUTH_HEADER + AuthApiHelper.getAuthToken(context)
