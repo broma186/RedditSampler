@@ -23,7 +23,8 @@ buildscript {
         materialVersion = '1.1.0-alpha09'
         glideVersion = '4.9.0'
         roomVersion = '2.1.0'
-
+        mockitoVersion = '2.7.22'
+        coreTestingVersion = '2.0.0'
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$gradleVersion"
