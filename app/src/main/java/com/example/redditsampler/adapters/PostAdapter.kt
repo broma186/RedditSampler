@@ -18,7 +18,7 @@ import com.example.redditsampler.R
 import com.example.redditsampler.utils.*
 
 
-class PostAdapter(private val context: Context, private val posts : List<Post>?) : RecyclerView.Adapter<PostAdapter.PostViewHolder>(){
+class PostAdapter(private val posts : List<Post>?) : RecyclerView.Adapter<PostAdapter.PostViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostAdapter.PostViewHolder {
         return PostViewHolder(
@@ -34,7 +34,6 @@ class PostAdapter(private val context: Context, private val posts : List<Post>?)
                 bind(products)
             }
         }
-
     }
 
     override fun getItemCount(): Int {
@@ -49,31 +48,18 @@ class PostAdapter(private val context: Context, private val posts : List<Post>?)
             context = binding.root.context
 
             binding.setClickListener { view ->
-                openPost()
+                binding.viewModel?.openPost()
             }
 
             binding.commentsLayout.setOnClickListener {
-                goToComments()
+                binding.viewModel?.goToComments()
             }
         }
         fun bind(post: Post) {
             with(binding) {
-                viewModel = PostViewModel(post)
+                viewModel = PostViewModel(context, post)
                 executePendingBindings()
             }
-        }
-
-        fun goToComments() {
-            val intent = Intent(context, CommentsActivity::class.java)
-            intent.putExtra(COMMENTS_LINK, binding.viewModel?.link)
-            startActivity(context, intent, null)
-        }
-
-        // Opens the reddit post specified by the post object's link in a browser.
-        fun openPost() {
-            val i = Intent(Intent.ACTION_VIEW)
-            i.data = Uri.parse(LINK_BASE + binding.viewModel?.link)
-            startActivity(context, i, null)
         }
     }
 }

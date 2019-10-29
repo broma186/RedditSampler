@@ -20,16 +20,27 @@ import com.example.redditsampler.data.Comment
 import com.example.redditsampler.databinding.ActivityCommentsBinding
 import com.example.redditsampler.viewmodels.CommentsViewModel
 import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
+import javax.inject.Inject
 
 /*
 Displays the comments for the selected post. Does not show replies, something that can be expanded
 upon in future.
  */
-class CommentsActivity : AppCompatActivity() {
+class CommentsActivity : AppCompatActivity(), HasAndroidInjector {
 
     lateinit var binding: ActivityCommentsBinding
     lateinit var adapter : CommentsAdapter
     val context: Context = this
+
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+
+    override fun androidInjector(): AndroidInjector<Any> {
+        return dispatchingAndroidInjector
+    }
 
     val commentsViewModel : CommentsViewModel? = CommentsViewModel(context, intent.getStringExtra(COMMENTS_LINK), object : CommentsInterface {
         override fun gotComments(comments: List<Comment>?, errorMessage: String?) {
@@ -58,7 +69,7 @@ class CommentsActivity : AppCompatActivity() {
      */
     fun setUpCommentsList(comments: List<Comment>?) {
         binding.commentList.layoutManager = LinearLayoutManager(this)
-        adapter = CommentsAdapter(this, comments)
+        adapter = CommentsAdapter(comments)
         binding.commentList.adapter = adapter
     }
 }

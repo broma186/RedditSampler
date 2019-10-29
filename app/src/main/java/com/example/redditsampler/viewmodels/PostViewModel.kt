@@ -25,12 +25,14 @@ import android.util.Log
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.example.redditsampler.CommentsActivity
 import com.example.redditsampler.R
 import com.example.redditsampler.utils.BASE_URL
+import com.example.redditsampler.utils.COMMENTS_LINK
 import com.example.redditsampler.utils.LINK_BASE
 
 
-class PostViewModel(post : Post): ViewModel() {
+class PostViewModel(val context : Context, post : Post): ViewModel() {
 
     val post : Post = checkNotNull(post)
 
@@ -42,8 +44,19 @@ class PostViewModel(post : Post): ViewModel() {
         get() = post.data.permalink
     val thumbnail
         get() =  post.data.thumbnail
-    val subreddit
-        get() = post.data.subreddit
+
+    fun goToComments() {
+        val intent = Intent(context, CommentsActivity::class.java)
+        intent.putExtra(COMMENTS_LINK, link)
+        ContextCompat.startActivity(context, intent, null)
+    }
+
+    // Opens the reddit post specified by the post object's link in a browser.
+    fun openPost() {
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(LINK_BASE + link)
+        ContextCompat.startActivity(context, i, null)
+    }
 
 }
 

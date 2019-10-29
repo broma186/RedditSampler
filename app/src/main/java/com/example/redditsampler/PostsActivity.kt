@@ -16,15 +16,38 @@ import com.example.redditsampler.data.AuthResponse
 import com.example.redditsampler.viewmodels.AuthViewModel
 import com.example.redditsampler.viewmodels.PostsViewModel
 import dagger.android.AndroidInjection
+import dagger.android.AndroidInjector
+import dagger.android.DispatchingAndroidInjector
+import dagger.android.HasAndroidInjector
+import javax.inject.Inject
 
 /*
 Displays either the reddit app use permissions screen in a webview, or the current posts.
  */
-class PostsActivity : AppCompatActivity() {
+class PostsActivity : AppCompatActivity(), HasAndroidInjector {
 
     lateinit var binding: ActivityPostsBinding
     lateinit var adapter: PostAdapter
     val context: Context = this
+
+    @Inject
+    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
+
+    override fun androidInjector(): AndroidInjector<Any> {
+        return dispatchingAndroidInjector
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        AndroidInjection.inject(this)
+
+        binding = DataBindingUtil.setContentView<ActivityPostsBinding>(this, R.layout.activity_posts)
+
+        setSupportActionBar(binding.toolbar)
+
+        authViewModel?.authenticateUserOrGetPosts()
+    }
 
     val postsViewModel: PostsViewModel? = PostsViewModel(context, object :
         PostsInterface {
@@ -47,24 +70,11 @@ class PostsActivity : AppCompatActivity() {
                 postsViewModel?.getPosts()
             }
         }
-
         override fun retrievedAuthToken() {
             hideAuthView()
             postsViewModel?.getPosts()
         }
     })
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        AndroidInjection.inject(this)
-
-        binding = DataBindingUtil.setContentView<ActivityPostsBinding>(this, R.layout.activity_posts)
-
-        setSupportActionBar(binding.toolbar)
-
-        authViewModel?.authenticateUserOrGetPosts()
-    }
 
     fun showAuthView() {
         binding.authView.visibility = View.VISIBLE
@@ -101,7 +111,7 @@ class PostsActivity : AppCompatActivity() {
 
     fun setUpPostsList(posts: List<Post>?) {
         binding.postList.layoutManager = LinearLayoutManager(this)
-        adapter = PostAdapter(this, posts)
+        adapter = PostAdapter(posts)
         binding.postList.adapter = adapter
     }
 }

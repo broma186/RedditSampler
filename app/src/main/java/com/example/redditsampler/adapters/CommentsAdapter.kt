@@ -10,7 +10,7 @@ import com.example.redditsampler.data.Comment
 import com.example.redditsampler.databinding.ListItemCommentBinding
 import com.example.redditsampler.viewmodels.CommentViewModel
 
-class CommentsAdapter(private val context: Context, private val comments : List<Comment>?) : RecyclerView.Adapter<CommentsAdapter.CommentViewHolder>(){
+class CommentsAdapter(private val comments : List<Comment>?) : RecyclerView.Adapter<CommentsAdapter.CommentViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentsAdapter.CommentViewHolder {
         return CommentViewHolder(
@@ -45,6 +45,5 @@ class CommentsAdapter(private val context: Context, private val comments : List<
                 executePendingBindings()
             }
         }
-
     }
 }

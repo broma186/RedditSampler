@@ -1,13 +1,13 @@
 package com.example.redditsampler
 
 import android.app.Application
+import dagger.DaggerAppComponent
+import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
 import javax.inject.Inject
 
 class RedditSamplerApplication : Application(), HasAndroidInjector {
-
-    override fun androidInjector() = androidInjector
 
     @Inject
     lateinit var androidInjector: DispatchingAndroidInjector<Any>
@@ -17,5 +17,9 @@ class RedditSamplerApplication : Application(), HasAndroidInjector {
 
         DaggerAppComponent.create().inject(this)
 
+    }
+
+    override fun androidInjector(): AndroidInjector<Any> {
+        return androidInjector;
     }
 }
