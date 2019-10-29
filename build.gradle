@@ -25,6 +25,7 @@ buildscript {
         roomVersion = '2.1.0'
         mockitoVersion = '2.7.22'
         coreTestingVersion = '2.0.0'
+        dagger_version = '2.24'
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$gradleVersion"

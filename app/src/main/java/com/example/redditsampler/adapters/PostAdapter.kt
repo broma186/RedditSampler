@@ -21,6 +21,8 @@ import com.example.redditsampler.utils.*
 class PostAdapter(private val context: Context, private val posts : List<Post>?) : RecyclerView.Adapter<PostAdapter.PostViewHolder>(){
 
 
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PostAdapter.PostViewHolder {
         return PostViewHolder(
             DataBindingUtil.inflate(

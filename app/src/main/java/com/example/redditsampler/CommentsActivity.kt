@@ -2,33 +2,23 @@ package com.example.redditsampler
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.example.redditsampler.api.RedditServiceHelper
 import com.example.redditsampler.data.CommentResponse
-import com.example.redditsampler.data.PostResponse
 import com.example.redditsampler.utils.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
 import org.jetbrains.anko.toast
-import retrofit2.HttpException
 import retrofit2.Response
-import androidx.core.app.ComponentActivity.ExtraData
-import androidx.core.content.ContextCompat.getSystemService
-import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.redditsampler.adapters.CommentsAdapter
-import com.example.redditsampler.adapters.PostAdapter
 import com.example.redditsampler.api.AuthApiHelper
 import com.example.redditsampler.data.Comment
-import com.example.redditsampler.data.Post
 import com.example.redditsampler.databinding.ActivityCommentsBinding
-import com.example.redditsampler.databinding.ActivityPostsBinding
-import com.google.gson.Gson
+import dagger.android.AndroidInjection
 
 /*
 Displays the comments for the selected post. Does not show replies, something that can be expanded
@@ -41,9 +31,12 @@ class CommentsActivity : AppCompatActivity() {
     lateinit var adapter : CommentsAdapter
     val context: Context = this
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_posts)
+
+        AndroidInjection.inject(this)
 
         binding = DataBindingUtil.setContentView<ActivityCommentsBinding>(this, R.layout.activity_comments)
         setSupportActionBar(binding.toolbar)

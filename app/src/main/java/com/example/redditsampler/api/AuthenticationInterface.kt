@@ -1,6 +1,10 @@
 package com.example.redditsampler.api
 
-interface AuthenticationInterface {
+import com.example.redditsampler.data.AuthResponse
+import com.example.redditsampler.data.Post
+import com.example.redditsampler.viewmodels.AuthViewModel
 
+interface AuthenticationInterface {
+    fun retrievedAuthorization(authViewModel: AuthViewModel, authRes: List<AuthResponse>)
     fun retrievedAuthToken()
 }
