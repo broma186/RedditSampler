@@ -1,7 +1,6 @@
-package com.example.redditsampler.api
+package com.example.redditsampler
 
 import com.example.redditsampler.data.AuthResponse
-import com.example.redditsampler.data.Post
 import com.example.redditsampler.viewmodels.AuthViewModel
 
 interface AuthenticationInterface {

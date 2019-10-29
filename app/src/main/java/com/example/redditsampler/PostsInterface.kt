@@ -1,4 +1,4 @@
-package com.example.redditsampler.api
+package com.example.redditsampler
 
 import com.example.redditsampler.data.Post
 

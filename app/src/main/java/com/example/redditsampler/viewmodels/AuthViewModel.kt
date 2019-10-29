@@ -3,7 +3,7 @@ package com.example.redditsampler.viewmodels
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import com.example.redditsampler.api.AuthApiHelper
-import com.example.redditsampler.api.AuthenticationInterface
+import com.example.redditsampler.AuthenticationInterface
 import com.example.redditsampler.api.RedditServiceHelper
 import com.example.redditsampler.data.AuthResponse
 import com.example.redditsampler.utils.*
@@ -15,7 +15,10 @@ import org.apache.commons.codec.binary.Base64
 import retrofit2.Response
 import java.util.*
 
-class AuthViewModel(val context: Context, val authInterface: AuthenticationInterface, ) : ViewModel() {
+class AuthViewModel(val context: Context, val authInterface: AuthenticationInterface) :
+    ViewModel() {
+
+    val authViewModel = this
 
     /*
 Checks if there is an auth token response in database. If not, takes uer to the reddit permissions
@@ -27,7 +30,7 @@ then the user must tolerate the permissions screen again.
         CoroutineScope(Dispatchers.IO).launch {
             val authRes: List<AuthResponse> = AuthApiHelper.getAuthorization(context)
             withContext(Dispatchers.Main) {
-                authInterface.retrievedAuthorization(this, authRes)
+                authInterface.retrievedAuthorization(authViewModel, authRes)
             }
         }
     }
@@ -64,7 +67,7 @@ then the user must tolerate the permissions screen again.
         return UUID.randomUUID().toString()
     }
 
-    fun parseAuthPage(state: String, url: String) : String? {
+    fun parseAuthPage(state: String?, url: String): String? {
 
         if (!url.contains(AUTH_FAILURE) && url.startsWith(AUTH_REDIRECT_URI)) {
             val findState = url.substring(
@@ -119,7 +122,7 @@ then the user must tolerate the permissions screen again.
 
     /* This url is opened in the post activity's webview. It is the reddit permissions screen that needs to be
 * accepted so the user can use the app. It's only the comments that need an auth token to be displayed */
-    fun getAuthUrl(state: String): String =
+    fun getAuthUrl(state: String?): String =
         "https://www.reddit.com/api/v1/authorize.compact?client_id=" + AUTH_CLIENT_ID + "&response_type=" + AUTH_RESPONSE_TYPE +
                 "&state=" + state + "&redirect_uri=" + AUTH_REDIRECT_URI + "&duration=" + AUTH_DURATION + "&scope=" + AUTH_SCOPES
 

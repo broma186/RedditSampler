@@ -12,10 +12,7 @@ import com.example.redditsampler.adapters.PostAdapter
 import com.example.redditsampler.data.Post
 import com.example.redditsampler.databinding.ActivityPostsBinding
 import org.jetbrains.anko.toast
-import com.example.redditsampler.api.AuthenticationInterface
-import com.example.redditsampler.api.PostsInterface
 import com.example.redditsampler.data.AuthResponse
-import com.example.redditsampler.utils.*
 import com.example.redditsampler.viewmodels.AuthViewModel
 import com.example.redditsampler.viewmodels.PostsViewModel
 import dagger.android.AndroidInjection
@@ -29,7 +26,8 @@ class PostsActivity : AppCompatActivity() {
     lateinit var adapter: PostAdapter
     val context: Context = this
 
-    val postsViewModel: PostsViewModel = PostsViewModel(context, object : PostsInterface {
+    val postsViewModel: PostsViewModel? = PostsViewModel(context, object :
+        PostsInterface {
         override fun gotPosts(posts: List<Post>?, errorMessage: String?) {
             if (errorMessage.isNullOrBlank()) {
                 setUpPostsList(posts)
@@ -39,19 +37,20 @@ class PostsActivity : AppCompatActivity() {
         }
     })
 
-    val authViewModel: AuthViewModel = AuthViewModel(context, object : AuthenticationInterface {
+    val authViewModel: AuthViewModel? = AuthViewModel(context, object :
+        AuthenticationInterface {
         override fun retrievedAuthorization(authViewModel: AuthViewModel, authRes: List<AuthResponse>) {
             if (authViewModel.shouldShowAuthPermissionScreen(context, authRes)) {
                 showAuthView()
                 setupAuthView()
             } else {
-                postsViewModel.getPosts()
+                postsViewModel?.getPosts()
             }
         }
 
         override fun retrievedAuthToken() {
             hideAuthView()
-            postsViewModel.getPosts()
+            postsViewModel?.getPosts()
         }
     })
 
@@ -64,7 +63,7 @@ class PostsActivity : AppCompatActivity() {
 
         setSupportActionBar(binding.toolbar)
 
-        authViewModel.authenticateUserOrGetPosts()
+        authViewModel?.authenticateUserOrGetPosts()
     }
 
     fun showAuthView() {
@@ -77,20 +76,19 @@ class PostsActivity : AppCompatActivity() {
        crudely using substrings.
     */
     fun setupAuthView() {
-        val state = authViewModel.generateState()
+        val state = authViewModel?.generateState()
         try {
             binding.authView.setWebViewClient(object : WebViewClient() {
-
                 override fun onPageFinished(view: WebView, url: String) {
-                    val code = authViewModel.parseAuthPage(state, url)
+                    val code = authViewModel?.parseAuthPage(state, url)
                     if (!code.isNullOrBlank()) {
-                        authViewModel.getAuthToken(context, code)
+                        authViewModel?.getAuthToken(context, code)
                     } else {
-                        binding.authView.loadUrl(authViewModel.getAuthUrl(state))
+                        binding.authView.loadUrl(authViewModel?.getAuthUrl(state))
                     }
                 }
             })
-            binding.authView.loadUrl(authViewModel.getAuthUrl(state))
+            binding.authView.loadUrl(authViewModel?.getAuthUrl(state))
         } catch (ex: Exception) {
             ex.printStackTrace()
             hideAuthView()

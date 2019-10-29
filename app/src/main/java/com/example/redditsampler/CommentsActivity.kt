@@ -18,6 +18,7 @@ import com.example.redditsampler.adapters.CommentsAdapter
 import com.example.redditsampler.api.AuthApiHelper
 import com.example.redditsampler.data.Comment
 import com.example.redditsampler.databinding.ActivityCommentsBinding
+import com.example.redditsampler.viewmodels.CommentsViewModel
 import dagger.android.AndroidInjection
 
 /*
@@ -27,10 +28,18 @@ upon in future.
 class CommentsActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityCommentsBinding
-    private var permalink: String? = null
     lateinit var adapter : CommentsAdapter
     val context: Context = this
 
+    val commentsViewModel : CommentsViewModel? = CommentsViewModel(context, intent.getStringExtra(COMMENTS_LINK), object : CommentsInterface {
+        override fun gotComments(comments: List<Comment>?, errorMessage: String?) {
+            if (errorMessage.isNullOrBlank()) {
+                setUpCommentsList(comments)
+            } else {
+                toast(errorMessage)
+            }
+        }
+    })
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +50,7 @@ class CommentsActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView<ActivityCommentsBinding>(this, R.layout.activity_comments)
         setSupportActionBar(binding.toolbar)
 
-        permalink = intent.getStringExtra(COMMENTS_LINK) // The link URL used to get the comments
-
-        getComments() // Get the comments using the permalink value
+        commentsViewModel?.getComments() // Get the comments using the permalink value
     }
 
     /*
@@ -53,24 +60,5 @@ class CommentsActivity : AppCompatActivity() {
         binding.commentList.layoutManager = LinearLayoutManager(this)
         adapter = CommentsAdapter(this, comments)
         binding.commentList.adapter = adapter
-    }
-
-    /*
-    Downloads comments for the selected article in the posts activity.
-     */
-    fun getComments() {
-        CoroutineScope(Dispatchers.IO).launch {
-            val authorization =  AUTH_HEADER + AuthApiHelper.getAuthToken(context)
-            val response: Response<List<CommentResponse>> =
-                RedditServiceHelper.getComments(authorization, permalink)
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    setUpCommentsList(response.body()?.get(1)?.data?.children)
-                } else {
-                    toast("Failed to get comments")
-                    finish()
-                }
-            }
-        }
     }
 }
